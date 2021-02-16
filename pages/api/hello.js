@@ -23,6 +23,7 @@ const userDocSchema = {
 const mpUser = mongoose.model("userInfo",userDocSchema);
 app.post("/api/hello",function(req, res){
   let user = new mpUser(JSON.parse(req.body));
+  console.log("Information being saveds");
   user.save(function(err,user){
     if(err){console.log(err)}
   });
