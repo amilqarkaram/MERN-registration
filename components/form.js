@@ -10,18 +10,15 @@ export default function form(props){
   const [session] = useSession();
   console.log("props:" );
   console.log(util.inspect(props, {showHidden: false, depth: null}));
-  const [pageState,setPageState] = useState({
-    readOnly: props.user,
-    waitMessage: ""
-  });
-  console.log("read ONly value: " + pageState.readOnly);
+  const [readOnly,setReadOnly] = useState(props.user);
+  console.log("read ONly value: " + readOnly);
   const [userInfo,setUserInfo] = useState(function(){
     return(
       {
         firstName: props.user ? props.user.firstName : "",
         lastName: props.user ? props.user.lastName : "",
         emailAddress: props.user ? props.user.emailAddress : "",
-        textResponse: props.user ? props.user.textResponse : "",
+        textResponse: props.user ? props.user.text : "",
         image: session ? session.user.image : "",
         githubName: session.user.name
       }
@@ -30,32 +27,26 @@ export default function form(props){
   console.log("user Info");
   console.log(util.inspect(userInfo, {showHidden: false, depth: null}));
   useEffect(()=>{
-    setPageState({
-      readOnly: props.user,
-      waitMessage: ""
+    setReadOnly(props.user);
+    setUserInfo({
+          firstName: props.user ? props.user.firstName : "",
+          lastName: props.user ? props.user.lastName : "",
+          emailAddress: props.user ? props.user.emailAddress : "",
+          textResponse: props.user ? props.user.textResponse : "",
+          image: session ? session.user.image : "",
+          githubName: session.user.name
     });
   },[props.user]);
   function handleSubmit(event){
   console.log(util.inspect(userInfo, {showHidden: false, depth: null}));
-  setPageState({
-    readOnly: false,
-    waitMessage: "Please Wait..."
-  });
   fetch('/api/hello', {
   method: 'post',
   body: JSON.stringify(userInfo)
-}).then(function(){
-      setPageState({
-        readOnly: true,
-        waitMessage: ""
-      });
-});
+})
+      setReadOnly(true);
   }
   function handleEdit(event){
-    setPageState({
-      readOnly: false,
-      waitMessage: ""
-    });
+    setReadOnly(false);
   }
   function handleChange(event){
     setUserInfo(function(currentState){
@@ -77,9 +68,9 @@ export default function form(props){
         placeholder="First Name"
         type="text"
         name="firstName"
-        value={props.user && pageState.readOnly? props.user.firstName: userInfo.firstName}
-        defaultValue= {props.user && pageState.readOnly? props.user.firstName : userInfo.firstName}
-        readOnly={pageState.readOnly}
+        value={props.user && readOnly? props.user.firstName: userInfo.firstName}
+        defaultValue= {props.user && readOnly? props.user.firstName : userInfo.firstName}
+        readOnly={readOnly}
         onChange={handleChange}
       />
     </Form.Group>
@@ -89,9 +80,9 @@ export default function form(props){
         placeholder="Last Name"
         type="text"
         name="lastName"
-        value={props.user && pageState.readOnly? props.user.lastName: userInfo.lastName}
-        defaultValue= {props.user && pageState.readOnly ? props.user.lastName : userInfo.lastName}
-        readOnly={pageState.readOnly}
+        value={props.user && readOnly? props.user.lastName: userInfo.lastName}
+        defaultValue= {props.user &&readOnly ? props.user.lastName : userInfo.lastName}
+        readOnly={readOnly}
         onChange={handleChange}
       />
     </Form.Group>
@@ -101,9 +92,9 @@ export default function form(props){
         type="email"
         placeholder="Enter email"
         name="emailAddress"
-        value={props.user && pageState.readOnly? props.user.emailAddress: userInfo.emailAddress}
-        defaultValue= {props.user && pageState.readOnly? props.user.emailAddress : userInfo.emailAddress}
-        readOnly={pageState.readOnly}
+        value={props.user && readOnly? props.user.emailAddress: userInfo.emailAddress}
+        defaultValue= {props.user && readOnly? props.user.emailAddress : userInfo.emailAddress}
+        readOnly={readOnly}
         onChange={handleChange}
         />
       <Form.Text className="text-muted">
@@ -117,9 +108,9 @@ export default function form(props){
       as="textarea"
       name="textResponse"
       rows={3}
-      value={props.user && pageState.readOnly? props.user.textResponse: userInfo.textResponse}
-      defaultValue= {props.user && pageState.readOnly? props.user.textResponse : userInfo.textResponse}
-      readOnly={pageState.readOnly}
+      value={props.user && readOnly? props.user.textResponse: userInfo.textResponse}
+      defaultValue= {props.user && readOnly? props.user.textResponse : userInfo.textResponse}
+      readOnly={readOnly}
       onChange={handleChange}
       />
     </Form.Group>
@@ -128,9 +119,8 @@ export default function form(props){
     <Button onClick={handleSubmit} variant="primary" type="button">
     Submit
     </Button>
-    <p>{pageState.waitMessage}</p>
     </Form.Group>
-    {pageState.readOnly ?
+    {readOnly ?
       <Form.Group as={Col}>
       <Button className={styles.editButton}onClick={handleEdit} variant="primary" type="button">
       Edit

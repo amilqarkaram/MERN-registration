@@ -10,11 +10,12 @@ import styles from "../styles/Home.module.css"
 const util = require('util')
 import axios from 'axios';
 import fetch from 'isomorphic-unfetch'
+var session = null;
 export default function Home(props){
   const[data,setData] = useState(null);
   console.log("data: ");
   console.log(util.inspect(data, {showHidden: false, depth: null}));
-  const [session] = useSession();
+  var [session] = useSession();
   if(session){
     console.log(util.inspect(session.user, {showHidden: false, depth: null}));
   }
@@ -22,7 +23,7 @@ export default function Home(props){
       let info = null;
       if(session && session.user){
       async function getInfo(){
-        axios.get('http://localhost:3000/api/hello/?githubName=' + session.user.name)
+        axios.get('/api/hello/?githubName=' + session.user.name)
         .then(function(response){
           console.log("Response: ");
           console.log(util.inspect(response, {showHidden: false, depth: null}));
@@ -54,19 +55,3 @@ export default function Home(props){
     </div>
   );
 }
-// export async function getServerSideProps() {
-//   console.log("this function is called");
-//   // Get external data from the file system, API, DB, etc.
-//   let data = null;
-//   if(session !== undefined){
-//   data = await fetch('http://localhost:3000/api/hello/' + session.user.name, {
-//     method: 'get',
-//   })
-// }
-// console.log("data: " + data);
-//   // The value of the `props` key will be
-//   //  passed to the `Home` component
-//   return {
-//     props: {data}
-//   }
-// }
