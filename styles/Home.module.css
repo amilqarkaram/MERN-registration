@@ -64,3 +64,30 @@
     top: 0vh;
   }
 }
+@media (max-width: 1200px) {
+  .formContainer {
+    min-height: 30vh;
+    min-width:60vw;
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:blue;
+    border: 3px;
+    border-style: solid;
+    border-radius:20px;
+    box-shadow: 5px 5px 5px black;
+    position:absolute;
+    right: 0;
+    left:0;
+    margin:auto;
+    top: 10vh;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .imageLogo{
+    position:relative;
+    top: 0vh;
+  }
+}
