@@ -1,12 +1,13 @@
 import {signIn} from 'next-auth/client'
+import {Button} from 'react-bootstrap'
+import styles from '../styles/Home.module.css'
 const handleSignIn = (e) => {
-  e.preventDefault()
-  signIn()
+  signIn();
 }
 export default function SignIn(){
   return(
-    <div>
-      <button onClick={handleSignIn}>Sign-In</button>
+    <div className={styles.signInButton}>
+      <Button style={{fontSize: "200%"}}onClick={handleSignIn}>Sign-In with Github</Button>
     </div>
   );
 }
