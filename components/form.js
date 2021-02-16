@@ -43,6 +43,12 @@ export default function form(props){
   method: 'post',
   body: JSON.stringify(userInfo)
 })
+      if(props){
+      props.user.firstName = userInfo.firstName;
+      props.user.lastName = userInfo.lastName;
+      props.user.emailAddress = userInfo.emailAddress;
+      props.user.textResponse = userInfo.textResponse;
+    }
       setReadOnly(true);
   }
   function handleEdit(event){
