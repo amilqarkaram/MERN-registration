@@ -6,12 +6,13 @@ import {useSession} from 'next-auth/client'
 import axios from 'axios'
 import fetch from 'isomorphic-unfetch'
 const util = require('util')
+//Meat of the app
 export default function form(props){
+  //session give information from github that is used to query the database
   const [session] = useSession();
-  console.log("props:" );
-  console.log(util.inspect(props, {showHidden: false, depth: null}));
+  // allows conditional rendering of textareas and inputs as readOnly
   const [readOnly,setReadOnly] = useState(props.user);
-  console.log("read ONly value: " + readOnly);
+  //saves input state
   const [userInfo,setUserInfo] = useState(function(){
     return(
       {
@@ -24,8 +25,7 @@ export default function form(props){
       }
     );
   })
-  console.log("user Info");
-  console.log(util.inspect(userInfo, {showHidden: false, depth: null}));
+  //updates state in this component anytime user information changes in the parent
   useEffect(()=>{
     setReadOnly(props.user);
     setUserInfo({
@@ -38,11 +38,11 @@ export default function form(props){
     });
   },[props.user]);
   function handleSubmit(event){
-  console.log(util.inspect(userInfo, {showHidden: false, depth: null}));
-  fetch('/api/hello', {
+  fetch('/api/server', {
   method: 'post',
   body: JSON.stringify(userInfo)
 })
+    //allows for maintanence of info in input areas after submit is clicked
       if(props){
       props.user.firstName = userInfo.firstName;
       props.user.lastName = userInfo.lastName;

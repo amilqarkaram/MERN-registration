@@ -47,8 +47,4 @@ a {
     position:relative;
     top: 0vh;
   }
-  .container{
-    max-width: 50vw;
-    min-width: 40vw;
-  }
 }

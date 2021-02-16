@@ -10,23 +10,16 @@ import styles from "../styles/Home.module.css"
 const util = require('util')
 import axios from 'axios';
 import fetch from 'isomorphic-unfetch'
-var session = null;
 export default function Home(props){
   const[data,setData] = useState(null);
-  console.log("data: ");
-  console.log(util.inspect(data, {showHidden: false, depth: null}));
   var [session] = useSession();
-  if(session){
-    console.log(util.inspect(session.user, {showHidden: false, depth: null}));
-  }
+  //will update user data once the session changes(signed in or not signed in)
   useEffect(()=>{
       let info = null;
       if(session && session.user){
       async function getInfo(){
-        axios.get('/api/hello/?githubName=' + session.user.name)
+        axios.get('/api/server/?githubName=' + session.user.name)
         .then(function(response){
-          console.log("Response: ");
-          console.log(util.inspect(response, {showHidden: false, depth: null}));
           setData(response.data)
         });
       }
