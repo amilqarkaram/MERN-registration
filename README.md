@@ -1,8 +1,8 @@
-##About
+## About
 This is a small registration app. This was built using Express.js, Node.js,
 Next.js, React.js, MongoDB and Mongoose.
 
-##Functionality
+##  Functionality
 Using NextAuth library, the app allows for Github authorization. Once authorized,
 a form will pop up. Using this form, you can:
 -Register information about yourself
@@ -12,8 +12,8 @@ a form will pop up. Using this form, you can:
 
 The app is also responsive to most screen-sizes.
 
-##Inspiration
+## Inspiration
 I owe the following articles a lot in the way of implementing this app:
--[nextAuth tutorial](https://blog.logrocket.com/how-to-use-nextauth-js-for-client-side-authentication-in-next-js/)
--[next.js with mongodb tutorial](https://developer.mongodb.com/how-to/nextjs-building-modern-applications/)
--[next.js basics](https://nextjs.org/learn/basics/create-nextjs-app?utm_source=next-site&utm_medium=homepage-cta&utm_campaign=next-website)
+[nextAuth tutorial](https://blog.logrocket.com/how-to-use-nextauth-js-for-client-side-authentication-in-next-js/)
+[next.js with mongodb tutorial](https://developer.mongodb.com/how-to/nextjs-building-modern-applications/)
+[next.js basics](https://nextjs.org/learn/basics/create-nextjs-app?utm_source=next-site&utm_medium=homepage-cta&utm_campaign=next-website)
