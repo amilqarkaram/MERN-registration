@@ -29,6 +29,10 @@
    -webkit-transform: translate(-50%, -50%);
    transform: translate(-50%, -50%);
 }
+.editButton{
+  position: absolute;
+  right: 0;
+}
 .imageLogo{
   position:relative;
   top: 20vh;

@@ -1,43 +1,64 @@
 import {Form,Button} from 'react-bootstrap'
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
+import {Col} from 'react-bootstrap'
 import styles from '../styles/Home.module.css'
 import {useSession} from 'next-auth/client'
 import axios from 'axios'
 import fetch from 'isomorphic-unfetch'
 const util = require('util')
-export default function form(){
+export default function form(props){
   const [session] = useSession();
-  const [inputs,setInput] = useState(function(){
+  console.log("props:" );
+  console.log(util.inspect(props, {showHidden: false, depth: null}));
+  const [pageState,setPageState] = useState({
+    readOnly: props.user,
+    waitMessage: ""
+  });
+  console.log("read ONly value: " + pageState.readOnly);
+  const [userInfo,setUserInfo] = useState(function(){
     return(
       {
-        firstName: "",
-        lastName: "",
-        emailAddress: "",
-        textResponse: "",
-        image: session ? session.user.image : ""
+        firstName: props.user ? props.user.firstName : "",
+        lastName: props.user ? props.user.lastName : "",
+        emailAddress: props.user ? props.user.emailAddress : "",
+        textResponse: props.user ? props.user.textResponse : "",
+        image: session ? session.user.image : "",
+        githubName: session.user.name
       }
     );
   })
+  console.log("user Info");
+  console.log(util.inspect(userInfo, {showHidden: false, depth: null}));
+  useEffect(()=>{
+    setPageState({
+      readOnly: props.user,
+      waitMessage: ""
+    });
+  },[props.user]);
   function handleSubmit(event){
-  console.log(util.inspect(inputs, {showHidden: false, depth: null}));
+  console.log(util.inspect(userInfo, {showHidden: false, depth: null}));
+  setPageState({
+    readOnly: false,
+    waitMessage: "Please Wait..."
+  });
   fetch('/api/hello', {
   method: 'post',
-  body: JSON.stringify(inputs)
-})
-    setInput(function(currentState){
-      return(
-        {
-          ...currentState,
-          firstName: "",
-          lastName: "",
-          emailAddress:"",
-          textResponse: "",
-        }
-      );
+  body: JSON.stringify(userInfo)
+}).then(function(){
+      setPageState({
+        readOnly: true,
+        waitMessage: ""
+      });
+});
+  }
+  function handleEdit(event){
+    setPageState({
+      readOnly: false,
+      waitMessage: ""
     });
   }
   function handleChange(event){
-    setInput(function(currentState){
+    setUserInfo(function(currentState){
       const obj = currentState;
       obj[event.target.name] = event.target.value;
       return(
@@ -56,7 +77,9 @@ export default function form(){
         placeholder="First Name"
         type="text"
         name="firstName"
-        value={inputs.firstName}
+        value={props.user && pageState.readOnly? props.user.firstName: userInfo.firstName}
+        defaultValue= {props.user && pageState.readOnly? props.user.firstName : userInfo.firstName}
+        readOnly={pageState.readOnly}
         onChange={handleChange}
       />
     </Form.Group>
@@ -66,7 +89,9 @@ export default function form(){
         placeholder="Last Name"
         type="text"
         name="lastName"
-        value={inputs.lastName}
+        value={props.user && pageState.readOnly? props.user.lastName: userInfo.lastName}
+        defaultValue= {props.user && pageState.readOnly ? props.user.lastName : userInfo.lastName}
+        readOnly={pageState.readOnly}
         onChange={handleChange}
       />
     </Form.Group>
@@ -76,7 +101,9 @@ export default function form(){
         type="email"
         placeholder="Enter email"
         name="emailAddress"
-        value={inputs.emailAddress}
+        value={props.user && pageState.readOnly? props.user.emailAddress: userInfo.emailAddress}
+        defaultValue= {props.user && pageState.readOnly? props.user.emailAddress : userInfo.emailAddress}
+        readOnly={pageState.readOnly}
         onChange={handleChange}
         />
       <Form.Text className="text-muted">
@@ -90,13 +117,28 @@ export default function form(){
       as="textarea"
       name="textResponse"
       rows={3}
-      value={inputs.textResponse}
+      value={props.user && pageState.readOnly? props.user.textResponse: userInfo.textResponse}
+      defaultValue= {props.user && pageState.readOnly? props.user.textResponse : userInfo.textResponse}
+      readOnly={pageState.readOnly}
       onChange={handleChange}
       />
     </Form.Group>
+    <Form.Row>
+    <Form.Group as={Col}>
     <Button onClick={handleSubmit} variant="primary" type="button">
     Submit
     </Button>
+    <p>{pageState.waitMessage}</p>
+    </Form.Group>
+    {pageState.readOnly ?
+      <Form.Group as={Col}>
+      <Button className={styles.editButton}onClick={handleEdit} variant="primary" type="button">
+      Edit
+      </Button>
+      </Form.Group>:
+      ""
+    }
+    </Form.Row>
 </Form>
     </div>
   );

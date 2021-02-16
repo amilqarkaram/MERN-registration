@@ -18,17 +18,51 @@ const userDocSchema = {
   lastName: String,
   emailAddress: String,
   textResponse: String,
-  image: String
+  image: String,
+  githubName: String
 };
-const mpUser = mongoose.model("userInfo",userDocSchema);
+let mpUser;
+try {
+  mpUser = mongoose.model('user')
+} catch (error) {
+  mpUser = mongoose.model('user', userDocSchema)
+}
 app.post("/api/hello",function(req, res){
-  let user = new mpUser(JSON.parse(req.body));
-  console.log("Information being saved ");
-  user.save(function(err,user){
+  console.log("Json parse: ");
+  console.log(util.inspect(JSON.parse(req.body), {showHidden: false, depth: null}));
+  mpUser.findOne({githubName: (JSON.parse(req.body)).githubName},
+  function(err,user){
     if(err){console.log(err)}
+    else{
+      if(!user){
+        let user = new mpUser(JSON.parse(req.body));
+        console.log("Creating a new user ");
+        user.save(function(err,user){
+          if(err){console.log(err)}
+        });
+      }
+      else{
+        user.overwrite(JSON.parse(req.body));
+        user.save();
+        console.log("User should be updated ");
+      }
+    }
   });
 });
 app.get("/api/hello",function(req,res){
-  res.send(req.body);
+  if(req.query.githubName){
+  mpUser.findOne({githubName: req.query.githubName},function(err,result){
+     if(err){console.log('there was an error in search for the query')}
+     else{
+       console.log("result: ");
+       console.log(util.inspect(result, {showHidden: false, depth: null}));
+       res.json(result);
+     }
+  });
+}
+else{
+  res.send(null);
+  res.end();
+}
 });
 export default app;
