@@ -42,7 +42,7 @@ export default function Home(props){
       {!session ?
       <SignIn/> : ""}
       {session ?
-      <Container>
+      <Container fluid>
         <Row>
           <Col>
             <img className={styles.imageLogo}src="/images/mp_gradient_rock.svg"/>

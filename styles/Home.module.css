@@ -12,7 +12,7 @@
   border-radius:20px;
   box-shadow: 5px 5px 5px black;
   position:absolute;
-  right: .5vw;
+  right: 13vw;
   top: 50%;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -36,6 +36,7 @@
 .imageLogo{
   position:relative;
   top: 20vh;
+  left: 8vw;
 }
 @media (max-width: 1200px) {
   .formContainer {
@@ -81,7 +82,7 @@
     position:absolute;
     right: 0;
     left:0;
-    margin:auto;
+    margin-right:auto;
     top: 10vh;
     padding-top: 20px;
     padding-bottom: 20px;
