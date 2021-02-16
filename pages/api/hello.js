@@ -28,7 +28,6 @@ app.post("/api/hello",function(req, res){
   });
 });
 app.get("/api/hello",function(req,res){
-  console.log("Hellofkoienwnoin");
   res.send(req.body);
 });
 export default app;
