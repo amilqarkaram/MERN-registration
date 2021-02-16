@@ -20,7 +20,7 @@ export default function form(){
   })
   function handleSubmit(event){
   console.log(util.inspect(inputs, {showHidden: false, depth: null}));
-  fetch('http://localhost:3000/api/hello', {
+  fetch('mern-registration-13cozuyyx.vercel.app/api/hello', {
   method: 'post',
   body: JSON.stringify(inputs)
 })
